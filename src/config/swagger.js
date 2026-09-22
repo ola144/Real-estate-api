@@ -72,7 +72,13 @@ const swaggerDefinition = {
         },
         PropertyRequest: {
           type: "object",
-          required: ["title", "description", "propertyType", "price", "location"],
+          required: [
+            "title",
+            "description",
+            "propertyType",
+            "price",
+            "location",
+          ],
           properties: {
             title: { type: "string", example: "Modern three-bedroom home" },
             description: { type: "string" },
@@ -80,7 +86,51 @@ const swaggerDefinition = {
             price: { type: "number", example: 25000000 },
             photo: { type: "string", format: "uri" },
             photos: { type: "array", items: { type: "string", format: "uri" } },
-            location: { type: "object", additionalProperties: true },
+            location: {
+              type: "object",
+              required: ["country", "state", "city", "address"],
+              properties: {
+                country: {
+                  type: "object",
+                  required: ["code", "name"],
+                  properties: {
+                    code: {
+                      type: "string",
+                      example: "NG",
+                    },
+                    name: {
+                      type: "string",
+                      example: "Nigeria",
+                    },
+                  },
+                },
+
+                state: {
+                  type: "object",
+                  required: ["code", "name"],
+                  properties: {
+                    code: {
+                      type: "string",
+                      example: "LA",
+                    },
+                    name: {
+                      type: "string",
+                      example: "Lagos",
+                    },
+                  },
+                },
+
+                city: {
+                  type: "string",
+                  example: "Ikeja",
+                },
+
+                address: {
+                  type: "string",
+                  example: "15 Allen Avenue, Ikeja",
+                },
+              },
+            },
             beds: { type: "integer", minimum: 0 },
             baths: { type: "integer", minimum: 0 },
             area: { type: "number", minimum: 0 },
@@ -90,7 +140,15 @@ const swaggerDefinition = {
         },
         BookingRequest: {
           type: "object",
-          required: ["property", "date", "time", "guests", "name", "email", "phone"],
+          required: [
+            "property",
+            "date",
+            "time",
+            "guests",
+            "name",
+            "email",
+            "phone",
+          ],
           properties: {
             property: { type: "string", description: "Property MongoDB ID" },
             date: { type: "string", format: "date" },
