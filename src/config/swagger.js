@@ -65,6 +65,58 @@ const swaggerDefinition = {
             },
           },
         },
+        EmptyRequest: {
+          type: "object",
+          additionalProperties: false,
+          description: "This endpoint does not require request fields.",
+        },
+        PropertyRequest: {
+          type: "object",
+          required: ["title", "description", "propertyType", "price", "location"],
+          properties: {
+            title: { type: "string", example: "Modern three-bedroom home" },
+            description: { type: "string" },
+            propertyType: { type: "string", example: "House" },
+            price: { type: "number", example: 25000000 },
+            photo: { type: "string", format: "uri" },
+            photos: { type: "array", items: { type: "string", format: "uri" } },
+            location: { type: "object", additionalProperties: true },
+            beds: { type: "integer", minimum: 0 },
+            baths: { type: "integer", minimum: 0 },
+            area: { type: "number", minimum: 0 },
+            facilities: { type: "array", items: { type: "string" } },
+            status: { type: "string", example: "available" },
+          },
+        },
+        BookingRequest: {
+          type: "object",
+          required: ["property", "date", "time", "guests", "name", "email", "phone"],
+          properties: {
+            property: { type: "string", description: "Property MongoDB ID" },
+            date: { type: "string", format: "date" },
+            time: { type: "string", example: "10:30" },
+            guests: { type: "integer", minimum: 1, example: 2 },
+            name: { type: "string" },
+            email: { type: "string", format: "email" },
+            phone: { type: "string" },
+          },
+        },
+        AgentRequest: {
+          type: "object",
+          required: ["name", "email"],
+          properties: {
+            name: { type: "string" },
+            email: { type: "string", format: "email" },
+            phone: { type: "string" },
+            photo: { type: "string", format: "uri" },
+            bio: { type: "string" },
+            gender: { type: "string" },
+            specialization: { type: "string" },
+            experience: { type: "integer", minimum: 0 },
+            licenseNumber: { type: "string" },
+            location: { type: "string" },
+          },
+        },
       },
       parameters: {
         Id: {
@@ -152,6 +204,14 @@ const swaggerDefinition = {
         post: {
           tags: ["Auth"],
           summary: "Sign out",
+          requestBody: {
+            required: false,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/EmptyRequest" },
+              },
+            },
+          },
           responses: { 200: { description: "Token cookie cleared." } },
         },
       },
@@ -253,6 +313,14 @@ const swaggerDefinition = {
           tags: ["Properties"],
           summary: "Create a property",
           security: [{ authCookie: [] }],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/PropertyRequest" },
+              },
+            },
+          },
           responses: {
             201: { description: "Property created." },
             401: { $ref: "#/components/responses/Unauthorized" },
@@ -298,6 +366,14 @@ const swaggerDefinition = {
           tags: ["Bookings"],
           summary: "Create a booking",
           security: [{ authCookie: [] }],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/BookingRequest" },
+              },
+            },
+          },
           responses: {
             201: { description: "Booking created." },
             401: { $ref: "#/components/responses/Unauthorized" },
@@ -395,6 +471,14 @@ const swaggerDefinition = {
           tags: ["Agents"],
           summary: "Create an agent",
           security: [{ authCookie: [] }],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/AgentRequest" },
+              },
+            },
+          },
           responses: {
             201: { description: "Agent created." },
             401: { $ref: "#/components/responses/Unauthorized" },
@@ -426,6 +510,14 @@ const swaggerDefinition = {
           tags: ["Agents"],
           summary: "Resend agent password link",
           parameters: [{ $ref: "#/components/parameters/Id" }],
+          requestBody: {
+            required: false,
+            content: {
+              "application/json": {
+                schema: { $ref: "#/components/schemas/EmptyRequest" },
+              },
+            },
+          },
           responses: { 200: { description: "Password link sent." } },
         },
       },
