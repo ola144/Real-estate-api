@@ -56,7 +56,7 @@ exports.getAdminDashboardStatistics = async (req, res) => {
 
     const endOfPreviousMonth = new Date(now.getFullYear(), now.getMonth());
 
-    console.log(startOfCurrentMonth, startOfPreviousMonth, endOfPreviousMonth);
+    // console.log(startOfCurrentMonth, startOfPreviousMonth, endOfPreviousMonth);
 
     const [currentCustomers, previousCustomers, totalCustomers] =
       await Promise.all([
