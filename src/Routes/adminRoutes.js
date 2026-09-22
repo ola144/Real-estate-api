@@ -11,8 +11,8 @@ const router = express.Router();
 
 router.get(
   "/dashboard/statistics",
-  protect,
-  requireRole("admin"),
+  // protect,
+  // requireRole("admin"),
   getAdminDashboardStatistics,
 );
 

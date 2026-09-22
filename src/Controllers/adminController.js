@@ -45,9 +45,47 @@ exports.getAdminDashboardStatistics = async (req, res) => {
     // CUSTOMER STATISTICS
     // =====
 
-    const totalCustomers = await User.countDocuments({
-      role: "customer",
-    });
+    const now = new Date();
+
+    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth());
+
+    const startOfPreviousMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+    );
+
+    const endOfPreviousMonth = new Date(now.getFullYear(), now.getMonth());
+
+    console.log(startOfCurrentMonth, startOfPreviousMonth, endOfPreviousMonth);
+
+    const [currentCustomers, previousCustomers, totalCustomers] =
+      await Promise.all([
+        User.countDocuments({
+          role: "customer",
+          createdAt: { $gte: startOfCurrentMonth },
+        }),
+
+        User.countDocuments({
+          role: "customer",
+          createdAt: {
+            $gte: startOfPreviousMonth,
+            $lt: endOfPreviousMonth,
+          },
+        }),
+
+        User.countDocuments({
+          role: "customer",
+        }),
+      ]);
+
+    let percentageChange = 0;
+
+    if (previousCustomers === 0) {
+      percentageChange = currentCustomers > 0 ? 100 : 0;
+    } else {
+      percentageChange =
+        ((currentCustomers - previousCustomers) / previousCustomers) * 100;
+    }
 
     // =====
     // REVENUE
@@ -373,6 +411,9 @@ exports.getAdminDashboardStatistics = async (req, res) => {
 
         customers: {
           total: totalCustomers,
+          currentCustomers: currentCustomers,
+          previousCustomers: previousCustomers,
+          percentageChange,
         },
 
         // =====
