@@ -23,6 +23,7 @@ const { sendEmail } = require("./utils/email");
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
+  "https://real-estate-api-znjy.onrender.com/",
   "http://localhost:4200",
 ];
 
