@@ -1,16 +1,20 @@
 const swaggerDefinition = {
   definition: {
-    openapi: "3.0.3",
+    openapi: "3.0.0",
     info: {
       title: "RealEstate API",
       version: "1.0.0",
       description:
-        "API for property discovery, bookings, messaging, authentication, and role-based real estate management.",
+        "API for property discovery, bookings, authentication, and role-based real estate management.",
     },
     servers: [
       {
         url: "http://localhost:5000",
         description: "Local development server",
+      },
+      {
+        url: "https://real-estate-api-znjy.onrender.com",
+        description: "Production server",
       },
     ],
     tags: [
