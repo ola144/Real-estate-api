@@ -24,6 +24,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
   "https://real-estate-api-znjy.onrender.com/",
+  "https://realestateclientapplication.vercel.app/",
   "http://localhost:4200",
 ];
 
